@@ -1,5 +1,7 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+
+from accounts.models import User
 
 # Create your models here.
 class Theaters(models.Model):
@@ -18,4 +20,16 @@ class Theaters(models.Model):
 
     def __str__(self):
         return self.theater_name
+
+
+class TheaterReviews(models.Model):
+    ratings = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField()
+    theater_id = models.ForeignKey(Theaters, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Theater Reviews"
+
+    
 

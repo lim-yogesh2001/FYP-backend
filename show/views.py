@@ -87,7 +87,8 @@ class ReservedSeatView(APIView):
             return Response(serializer.data, status= status.HTTP_200_OK)
         except Reserved_Seat.DoesNotExist:
             return Response({"Not Found": "Does not exist"}, status=status.HTTP_404_NOT_FOUND)
-        
+    
+    
 
 # ////////        reserved seats     /////////
 
