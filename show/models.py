@@ -1,9 +1,9 @@
+import uuid
 from django.db import models
 from theater.models import Theaters
 from movie.models import Movies
 from accounts.models import User
 
-# Create your models here.
 
 
 class Shows(models.Model):
@@ -48,9 +48,13 @@ class Tickets(models.Model):
     seat_reserved_id = models.ForeignKey(
         Reserved_Seat, on_delete=models.CASCADE)
     Price = models.IntegerField(default=0)
+    created = models.DateTimeField(auto_now=True, null=True)
+    modified = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         verbose_name_plural = "Tickets"
 
     def __str__(self):
         return f"ticket {self.id}"
+    
+    

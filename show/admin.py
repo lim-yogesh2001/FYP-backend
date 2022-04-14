@@ -12,7 +12,7 @@ class ReservedSeatAdmin(admin.ModelAdmin):
     list_display = ('id', 'seat_id', 'show_id', 'reserved',)
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'show_id', 'seat_reserved_id', 'Price',)
+    list_display = ('id', 'user_id', 'show_id', 'seat_reserved_id', 'Price', 'created', 'modified',)
 
 # Register your models here.
 admin.site.register(Shows, ShowAdmin)

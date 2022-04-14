@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from yaml import serialize
 from .models import Reserved_Seat, Seats, Shows, Tickets
 
 

@@ -1,3 +1,4 @@
+from os import stat
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
@@ -77,7 +78,7 @@ class TheaterSeatView(APIView):
 # ////////        reserved seats     /////////
 class ReservedSeatView(APIView):
 
-    renderer_classes = [JSONRenderer]
+    # renderer_classes = [JSONRenderer]
 
     def get(self, request):
         # to get the reserved seat list
@@ -88,23 +89,97 @@ class ReservedSeatView(APIView):
         except Reserved_Seat.DoesNotExist:
             return Response({"Not Found": "Does not exist"}, status=status.HTTP_404_NOT_FOUND)
     
+    def post(self, request):
+        serializer = ReservedSeatSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReservedSeatDetailView(APIView):
+
+    # renderer_classes = [JSONRenderer]
+
+    def get(self, request, id):
+        try:
+            reserved_seat = Reserved_Seat.objects.get(id=id)
+            serializer = ReservedSeatSerializer(reserved_seat)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Reserved_Seat.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, id):
+        try:
+            reserved_seat = Reserved_Seat.objects.get(id=id)
+            serializer = ReservedSeatSerializer(reserved_seat, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Reserved_Seat.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
     
+    def delete(self, request, id):
+        try:
+            reserved_seat = Reserved_Seat.objects.get(id=id)
+            reserved_seat.delete()
+            return Response({"Deleted Successfully!!!"}, status=status.HTTP_404_NOT_FOUND)
+        except Reserved_Seat.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 # ////////        reserved seats     /////////
+
+
 
 
 # ////////        ticket View       /////////
 class TicketView(APIView):
 
-    renderer_classes = [JSONRenderer]
+    # renderer_classes = [JSONRenderer]
 
     def get(self, request):
         try:
             tickets = Tickets.objects.all()
-            serializer = TicketSerializer(tickets)
+            serializer = TicketSerializer(tickets, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not Exist"}, status= status.HTTP_404_NOT_FOUND)
+    
+    def post(self, request):
+        serializer = TicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TicketDetailView(APIView):
+
+    def get(self, request, id):
+        try:
+            ticket = Tickets.objects.get(id=id)
+            serializer = TicketSerializer(ticket)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Tickets.DoesNotExist:
+            return Response({"Not Found": "Does Not Exist"}, status= status.HTTP_404_NOT_FOUND)
+    
+    def put(self, request, id):
+        try:
+            ticket = Tickets.objects.get(id=id)
+            serializer = TicketSerializer(ticket, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_100_CONTINUE)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Tickets.DoesNotExist:
+            return Response({"Not Found": "Does Not Exist"}, status=status.HTTP_404_NOT_FOUND)
+    
+    def delete(self, request, id):
+        try:
+            ticket = Tickets.objects.get(id=id)
+            ticket.delete()
+            return Response({"Deleted Successfully!!!"}, status=status.HTTP_404_NOT_FOUND)
+        except Tickets.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         
 # ////////        ticket View       /////////
