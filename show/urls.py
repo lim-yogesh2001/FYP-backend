@@ -8,6 +8,6 @@ urlpatterns = [
     path("seats/<int:theater_id>", TheaterSeatView.as_view(), name='theater-seat-list'),
     path("reserved-seats/", ReservedSeatView.as_view(), name='reserved-seats'),
     path("reserved-seats/<int:id>", ReservedSeatDetailView.as_view(), name='reserved-seats-detail'),
-    path("tickets/", TicketView.as_view(), name = 'ticket-lists'),
-    path("tickets/<int:id>", TicketDetailView.as_view(), name='ticket-details')
+    path("tickets/<int:user_id>", TicketView.as_view(), name = 'ticket-lists'),
+    path("tickets/details/<int:id>", TicketDetailView.as_view(), name='ticket-details')
 ]

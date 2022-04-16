@@ -1,5 +1,5 @@
 from rest_framework import status, generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .serializer import RegisterSerializer, UserSerializer, ChangePassordSerializer
 from .models import User
 from rest_framework import permissions
@@ -10,6 +10,7 @@ from knox.auth import AuthToken
 
 
 @api_view(['GET', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def profile_view(request, id):
     if request.method == 'GET':
         profile = User.objects.get(id=id)
@@ -25,6 +26,7 @@ def profile_view(request, id):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def login_view(request):
     serializer = AuthTokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -42,6 +44,7 @@ def login_view(request):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def register_view(request):
     serializer = RegisterSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -61,6 +64,7 @@ def register_view(request):
         'token': token
     }, status=status.HTTP_201_CREATED)
 
+
 class ChangePasswordView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -68,7 +72,7 @@ class ChangePasswordView(APIView):
     def get_object(self, queryset=None):
         obj = self.request.user
         return obj
-    
+
     def put(self, request, *args, **kwargs):
         self.object = self.get_object()
         serializer = ChangePassordSerializer(data=request.data)
