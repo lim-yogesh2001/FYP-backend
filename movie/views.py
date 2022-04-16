@@ -5,6 +5,7 @@ from rest_framework import status
 from yaml import serialize
 from movie.models import Movies
 from .serializers import MovieSerializer
+from accounts.models import User
 
 # Create your views here.
 
@@ -48,4 +49,18 @@ class UpcomingMovieView(APIView):
             serializer = MovieSerializer(movie, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response("Model Does not exist")
+            return Response({"Model Does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+class RecommendedMovieView(APIView):
+
+    renderer_classes = [JSONRenderer]
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id,is_premium_user=True)
+            movies = Movies.objects.filter(user_id=user,is_recommended=True)
+            serializer = MovieSerializer(movies, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Movies.DoesNotExist:
+            return Response("Movies Does not exist", status=status.HTTP_404_NOT_FOUND)
+

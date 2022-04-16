@@ -20,6 +20,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=10, blank=True,
                              validators=[phone_reggex])
     full_name = models.CharField(max_length=100, blank=True)
+    is_premium_user = models.BooleanField(default=False)
 
     def __srt__(self):
         return f"User {self.username}"

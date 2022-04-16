@@ -67,5 +67,5 @@ def theater_reviews_detailviews(request, id):
     elif request.method == 'DELETE':
         review = TheaterReviews.objects.get(id=id)
         review.delete()
-        return Response("Deleted Successfully!!", status=status.HTTP_204_NO_CONTENT)
+        return Response({"Deleted Successfully!!"}, status=status.HTTP_204_NO_CONTENT)
         

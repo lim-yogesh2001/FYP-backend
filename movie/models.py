@@ -1,5 +1,6 @@
 from tabnanny import verbose
 from django.db import models
+from accounts.models import User
 
 # Create your models here.
 class Movies(models.Model):
@@ -13,6 +14,8 @@ class Movies(models.Model):
     descripton = models.TextField()
     is_upcoming = models.BooleanField(default=False)
     is_popular = models.BooleanField(default=False)
+    is_recommended = models.BooleanField(default=False)
+    user_id = models.ManyToManyField(User, null=True, blank=True, verbose_name='premium_user')
 
     class Meta:
         verbose_name_plural = "Movies"
