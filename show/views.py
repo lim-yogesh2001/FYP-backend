@@ -7,7 +7,6 @@ from movie.models import Movies
 from show.models import Reserved_Seat, Seats, Shows, Tickets
 from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer
 from theater.models import Theaters
-from hamro_cinema.FCMManager import send_notification, normal_notification
 from accounts.models import User
 # Create your views here.
 
@@ -151,7 +150,6 @@ class TicketView(APIView):
         user = User.objects.get(id=user_id)
         serializer = TicketSerializer(data=request.data)
         if serializer.is_valid():
-            normal_notification(title="Ticket Booked Successfully!", message="Thank You!!!", data=None)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -173,7 +171,6 @@ class TicketDetailView(APIView):
             ticket = Tickets.objects.get(id=id)
             serializer = TicketSerializer(ticket, data=request.data)
             if serializer.is_valid():
-                send_notification(user_id=ticket.user_id, title="Ticket Updated Successfully", message="Thank You For Updating!!!", data=None)
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_100_CONTINUE)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

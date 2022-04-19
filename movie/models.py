@@ -15,7 +15,7 @@ class Movies(models.Model):
     is_upcoming = models.BooleanField(default=False)
     is_popular = models.BooleanField(default=False)
     is_recommended = models.BooleanField(default=False)
-    user_id = models.ManyToManyField(User, null=True, blank=True, verbose_name='premium_user')
+    user_id = models.ManyToManyField(User, blank=True, verbose_name='premium_user')
 
     class Meta:
         verbose_name_plural = "Movies"
