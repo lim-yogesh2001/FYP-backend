@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'fcm_django',
     'django_rest_passwordreset',
+    'django_crontab',
     'knox',
     'accounts',
     'movie',
@@ -163,6 +164,10 @@ FCM_DJANGO_SETTINGS = {
     # "Update of device with duplicate registration ID" for more details.
     # "UPDATE_ON_DUPLICATE_REG_ID": True/False,
 }
+
+CRONJOBS = [
+    ('*/2 * * * *', 'hamro_cinema.FCMManager.send_reminder')
+]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
