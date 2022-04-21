@@ -165,9 +165,9 @@ FCM_DJANGO_SETTINGS = {
     # "UPDATE_ON_DUPLICATE_REG_ID": True/False,
 }
 
-CRONJOBS = [
-    ('*/2 * * * *', 'hamro_cinema.FCMManager.send_reminder')
-]
+# CRONJOBS = [
+#     ('*/2 * * * *', 'hamro_cinema.FCMManager.send_reminder')
+# ]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')

@@ -15,6 +15,7 @@ condition = "'booked-info' in topics || 'seat-reserved' in topics"
 
 
 def send_booked_notification(condition, title, body):
+    device = FCMDevice.objects.all()
     message = messaging.Message(
         data={
             'title': title,
@@ -22,14 +23,15 @@ def send_booked_notification(condition, title, body):
         },
         condition=condition
     )
-    response = messaging.send_message(message)
+    response = device.send_message(message, condition=condition)
     print('Sucessfully sent the info:', response)
 
 
+
+
 topic = 'reminder-info'
-
-
 def send_reminder(topic, title, body):
+    device = FCMDevice.objects.all()
     message = messaging.Message(
         notification=messaging.Notification(
             title=title,
@@ -49,5 +51,5 @@ def send_reminder(topic, title, body):
         ),
         topic=topic
     )
-    response = messanging.send_message(message)
+    response = device.send_message(message, topic=topic)
     print('Successfully sent the notification:', response)
