@@ -59,6 +59,7 @@ class Tickets(models.Model):
 
 class ReservedTicket(models.Model):
     ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
+    reserved_seat_id = models.ForeignKey(Reserved_Seat, on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
 
 
