@@ -8,7 +8,7 @@ from show.models import Reserved_Seat, Seats, Shows, Tickets
 from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer
 from theater.models import Theaters
 from accounts.models import User
-from hamro_cinema.FCMManager import send_booked_notification, send_reminder
+# from hamro_cinema.FCMManager import send_booked_notification, send_reminder
 # Create your views here.
 
 
@@ -95,7 +95,7 @@ class ReservedSeatView(APIView):
         serializer = ReservedSeatSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            send_booked_notification(condition="seat-reserved", title="Seat Reservation", body="Thank You! Your seat has been reserved successfully")
+            # send_booked_notification(condition="seat-reserved", title="Seat Reservation", body="Thank You! Your seat has been reserved successfully")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
