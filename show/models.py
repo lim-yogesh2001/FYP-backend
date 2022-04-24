@@ -56,5 +56,12 @@ class Tickets(models.Model):
 
     def __str__(self):
         return f"ticket {self.id}"
-    
+
+
+class BookedTickets(models.Model):
+    ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
+    transection_code = models.CharField(max_length=400)
+
+    class Meta:
+        verbose_name_plural = "Booked Tickets"
     
