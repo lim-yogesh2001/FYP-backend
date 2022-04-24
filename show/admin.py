@@ -9,10 +9,10 @@ class SeatAdmin(admin.ModelAdmin):
     list_display = ('id', 'row', 'number', 'theater_id',)
 
 class ReservedSeatAdmin(admin.ModelAdmin):
-    list_display = ('id', 'seat_id', 'show_id', 'reserved',)
+    list_display = ('id', 'user_id', 'seat_id', 'show_id', 'reserved',)
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'show_id', 'seat_reserved_id', 'Price', 'created', 'modified',)
+    list_display = ('id', 'show_id', 'Price', 'created', 'modified',)
 
 # Register your models here.
 admin.site.register(Shows, ShowAdmin)

@@ -97,8 +97,12 @@ class ReservedSeatView(APIView):
         serializer = ReservedSeatSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            send_booked_notification(condition="seat-reserved", title="Seat Reservation", body="Thank You! Your seat has been reserved successfully")
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            tickets = Tickets.objects.get(id = serializer.data['ticket_id'])
+            # send_booked_notification(condition="seat-reserved", title="Seat Reservation", body="Thank You! Your seat has been reserved successfully")
+            return Response({
+                'id' : tickets.id,
+                'price' : tickets.Price
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ReservedSeatDetailView(APIView):
@@ -195,70 +199,6 @@ class TicketDetailView(APIView):
             return Response({"Deleted Successfully!!!"}, status=status.HTTP_404_NOT_FOUND)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-# class TicketReservedView(APIView):
-
-#     def get(self, request, id):
-#         try:
-#             ticket = Tickets.objects.get(id=id)
-#             serializer = TicketSerializer(ticket)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except Tickets.DoesNotExist:
-#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-
-# class ReservedTicketView(APIView):
-
-#     def post(self, request):   
-#         serializer = ReservedTicketSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    
-# class ReservedTicketDetailView(APIView):
-#     def get(self, request, id):
-#         try:
-#             reservedTicket = ReservedTicket.objects.get(id=id)
-#             serializer = ReservedTicketSerializer(reservedTicket)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except ReservedTicket.DoesNotExist:
-#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-
-
-# class BookedTicketView(APIView):
-
-#     def post(self, request):   
-#         serializer = BookedTicketSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
-# class BookedTicketDetailView(APIView):
-#     def get(self, request, id):
-#         try:
-#             bookedTicket = BookedTickets.objects.get(id=id)
-#             serializer = BookedTicketSerializer(bookedTicket)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except BookedTickets.DoesNotExist:
-#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
-             
-
-
-# ////////        ticket View       /////////
-
-# def send_notification(user_id, title, message, data):
-#     try:
-#         device = FCMDevice.objects.filter(user__in=user_id).first()
-#         notification = Notification(title=title, body=message, data=data)
-#         result = device.send_message(notification=notification)
-#         print(result)
-#         return result
-#     except:
-#         return f"Something Went Wrong!!!!"
-
 
 
 
