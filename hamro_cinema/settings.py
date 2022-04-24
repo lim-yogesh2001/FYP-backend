@@ -166,7 +166,7 @@ FCM_DJANGO_SETTINGS = {
 }
 
 # CRONJOBS = [
-#     ('*/2 * * * *', 'hamro_cinema.FCMManager.send_reminder')
+#     ('*/2 * * * *', 'hamro_cinema.FCMManager.send_reminder', ['topic'], ['title'], ['body'])
 # ]
 
 

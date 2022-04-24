@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status, permissions
 from movie.models import Movies
-from show.models import Reserved_Seat, Seats, Shows, Tickets
-from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer
+from show.models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets, ReservedTicket
+from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
 from accounts.models import User
 # from hamro_cinema.FCMManager import send_booked_notification, send_reminder
@@ -80,7 +80,7 @@ class TheaterSeatView(APIView):
 class ReservedSeatView(APIView):
 
     # renderer_classes = [JSONRenderer]
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         # to get the reserved seat list
@@ -160,7 +160,7 @@ class TicketView(APIView):
 
 class TicketDetailView(APIView):
 
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, id):
         try:
@@ -189,6 +189,58 @@ class TicketDetailView(APIView):
             return Response({"Deleted Successfully!!!"}, status=status.HTTP_404_NOT_FOUND)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+class TicketReservedView(APIView):
+
+    def get(self, request, id):
+        try:
+            ticket = Tickets.objects.get(id=id)
+            serializer = TicketSerializer(ticket)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Tickets.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReservedTicketView(APIView):
+
+    def post(self, request):   
+        serializer = ReservedTicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class ReservedTicketDetailView(APIView):
+    def get(self, request, id):
+        try:
+            reservedTicket = ReservedTicket.objects.get(id=id)
+            serializer = ReservedTicketSerializer(reservedTicket)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ReservedTicket.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class BookedTicketView(APIView):
+
+    def post(self, request):   
+        serializer = BookedTicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class BookedTicketDetailView(APIView):
+    def get(self, request, id):
+        try:
+            bookedTicket = BookedTickets.objects.get(id=id)
+            serializer = BookedTicketSerializer(bookedTicket)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except BookedTickets.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+             
+
+
 # ////////        ticket View       /////////
 
 # def send_notification(user_id, title, message, data):
