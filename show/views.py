@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status, permissions
 from movie.models import Movies
-from show.models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets, ReservedTicket
-from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, BookedTicketSerializer, ReservedTicketSerializer
+from show.models import Reserved_Seat, Seats, Shows, Tickets
+# , BookedTickets, ReservedTicket
+from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer
+#  BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
 from accounts.models import User
 from hamro_cinema.FCMManager import send_booked_notification, send_reminder
@@ -140,10 +142,10 @@ class TicketView(APIView):
 
     # renderer_classes = [JSONRenderer]
 
-    def get(self, request, user_id):
+    def get(self, request):
         try:
-            user = User.objects.get(id=user_id)
-            tickets = Tickets.objects.filter(user_id=user)
+            # user = User.objects.)
+            tickets = Tickets.objects.all()
             serializer = TicketSerializer(tickets, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Tickets.DoesNotExist:
@@ -162,11 +164,15 @@ class TicketDetailView(APIView):
 
     # permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, id):
+    def get(self, request, reserved_seat_id):
         try:
-            ticket = Tickets.objects.get(id=id)
+            reserved_seat = Reserved_Seat.objects.get(id=reserved_seat_id)
+            ticket = Tickets.objects.get(seat_reserved_id=reserved_seat)
             serializer = TicketSerializer(ticket)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                "id": serializer.data['id'],
+                "price": serializer.data['Price']
+            }, status=status.HTTP_200_OK)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not Exist"}, status= status.HTTP_404_NOT_FOUND)
     
@@ -190,54 +196,54 @@ class TicketDetailView(APIView):
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-class TicketReservedView(APIView):
+# class TicketReservedView(APIView):
 
-    def get(self, request, id):
-        try:
-            ticket = Tickets.objects.get(id=id)
-            serializer = TicketSerializer(ticket)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Tickets.DoesNotExist:
-            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+#     def get(self, request, id):
+#         try:
+#             ticket = Tickets.objects.get(id=id)
+#             serializer = TicketSerializer(ticket)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except Tickets.DoesNotExist:
+#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
-class ReservedTicketView(APIView):
+# class ReservedTicketView(APIView):
 
-    def post(self, request):   
-        serializer = ReservedTicketSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):   
+#         serializer = ReservedTicketSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-class ReservedTicketDetailView(APIView):
-    def get(self, request, id):
-        try:
-            reservedTicket = ReservedTicket.objects.get(id=id)
-            serializer = ReservedTicketSerializer(reservedTicket)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except ReservedTicket.DoesNotExist:
-            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+# class ReservedTicketDetailView(APIView):
+#     def get(self, request, id):
+#         try:
+#             reservedTicket = ReservedTicket.objects.get(id=id)
+#             serializer = ReservedTicketSerializer(reservedTicket)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except ReservedTicket.DoesNotExist:
+#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
 
-class BookedTicketView(APIView):
+# class BookedTicketView(APIView):
 
-    def post(self, request):   
-        serializer = BookedTicketSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):   
+#         serializer = BookedTicketSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-class BookedTicketDetailView(APIView):
-    def get(self, request, id):
-        try:
-            bookedTicket = BookedTickets.objects.get(id=id)
-            serializer = BookedTicketSerializer(bookedTicket)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except BookedTickets.DoesNotExist:
-            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+# class BookedTicketDetailView(APIView):
+#     def get(self, request, id):
+#         try:
+#             bookedTicket = BookedTickets.objects.get(id=id)
+#             serializer = BookedTicketSerializer(bookedTicket)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except BookedTickets.DoesNotExist:
+#             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
              
 
 
