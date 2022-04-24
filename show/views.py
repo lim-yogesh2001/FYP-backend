@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status, permissions
 from movie.models import Movies
-from show.models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets
-from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, BookedTicketSerializer
+from show.models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets, ReservedTicket
+from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
 from accounts.models import User
 from hamro_cinema.FCMManager import send_booked_notification, send_reminder
@@ -199,6 +199,26 @@ class TicketReservedView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReservedTicketView(APIView):
+
+    def post(self, request):   
+        serializer = ReservedTicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class ReservedTicketDetailView(APIView):
+    def get(self, request, id):
+        try:
+            reservedTicket = ReservedTicket.objects.get(id=id)
+            serializer = ReservedTicketSerializer(reservedTicket)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ReservedTicket.DoesNotExist:
+            return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 class BookedTicketView(APIView):

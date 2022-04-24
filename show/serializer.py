@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets
+from .models import Reserved_Seat, Seats, Shows, Tickets, BookedTickets, ReservedTicket
 
 
 class ShowSerializer(serializers.ModelSerializer):
@@ -30,4 +30,9 @@ class TicketSerializer(serializers.ModelSerializer):
 class BookedTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookedTickets
+        fields = '__all__'
+
+class ReservedTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReservedTicket
         fields = '__all__'
