@@ -67,7 +67,7 @@ def register_view(request):
 
 class ChangePasswordView(APIView):
 
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, queryset=None):
         obj = self.request.user
