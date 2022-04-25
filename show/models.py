@@ -32,21 +32,8 @@ class Seats(models.Model):
         return f"Seat {self.id}"
 
 
-class Reserved_Seat(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    seat_id = models.ForeignKey(Seats, on_delete=models.CASCADE)
-    show_id = models.ForeignKey(Shows, on_delete=models.CASCADE)
-    reserved = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"Reserved Seats {self.id}"
-
-
 class Tickets(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     show_id = models.ForeignKey(Shows, on_delete=models.CASCADE)
-    seat_reserved_id = models.ForeignKey(
-        Reserved_Seat, on_delete=models.CASCADE)
     Price = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now=True, null=True)
     modified = models.DateTimeField(auto_now_add=True, null=True)
@@ -57,16 +44,30 @@ class Tickets(models.Model):
     def __str__(self):
         return f"ticket {self.id}"
 
-class ReservedTicket(models.Model):
-    ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
-    reserved_seat_id = models.ForeignKey(Reserved_Seat, on_delete=models.CASCADE)
-    price = models.IntegerField(default=0)
+class Reserved_Seat(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    seat_id = models.ForeignKey(Seats, on_delete=models.CASCADE)
+    show_id = models.ForeignKey(Shows, on_delete=models.CASCADE)
+    reserved = models.BooleanField(default=False)
+    ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"Reserved Seats {self.id}"
 
 
-class BookedTickets(models.Model):
-    ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
-    transection_code = models.CharField(max_length=400)
 
-    class Meta:
-        verbose_name_plural = "Booked Tickets"
+
+
+# class ReservedTicket(models.Model):
+#     ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
+#     reserved_seat_id = models.ForeignKey(Reserved_Seat, on_delete=models.CASCADE)
+#     price = models.IntegerField(default=0)
+
+
+# class BookedTickets(models.Model):
+#     ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
+#     transection_code = models.CharField(max_length=400)
+
+#     class Meta:
+#         verbose_name_plural = "Booked Tickets"
     

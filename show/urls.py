@@ -14,8 +14,5 @@ urlpatterns = [
     path("tickets/<int:user_id>", TicketView.as_view(), name='ticket-lists'),
     path("tickets/details/<int:reserved_seat_id>",
          TicketDetailView.as_view(), name='ticket-details'),
-    # path("bookedtickets/", BookedTicketView.as_view(), name='book-tickets'),
-    # path("bookedtickets/<int:id>", BookedTicketDetailView.as_view(), name='booked-ticket-details'),
-    # path("reservedticket/", ReservedTicketView.as_view(), name='reserved-ticket-post'),
-    # path("reservedticket/<int:id>", ReservedTicketDetailView.as_view(), name='reserved-ticket-detail')
+    
 ]
