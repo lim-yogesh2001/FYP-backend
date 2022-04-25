@@ -54,6 +54,15 @@ class Reserved_Seat(models.Model):
     def __str__(self):
         return f"Reserved Seats {self.id}"
 
+class Transection(models.Model):
+    ticket_id = models.OneToOneField(Tickets, on_delete=models.CASCADE)
+    reserved_seat_id = models.OneToOneField(Reserved_Seat, on_delete=models.CASCADE)
+    transection_code = models.CharField(max_length=400)
+
+    def __str__(self):
+        return f"Transection-id: {self.id}"
+    
+
 
 
 

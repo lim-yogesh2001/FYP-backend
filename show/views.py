@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status, permissions
 from movie.models import Movies
-from show.models import Reserved_Seat, Seats, Shows, Tickets
+from show.models import Reserved_Seat, Seats, Shows, Tickets, Transection
 # , BookedTickets, ReservedTicket
-from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer
+from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, TransectionSerializer
 #  BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
 from accounts.models import User
@@ -99,9 +99,6 @@ class ReservedSeatView(APIView):
             serializer.save()
             show = Shows.objects.get(id=serializer.data['show_id'])
             tickets = Tickets.objects.create(show_id = show, Price = 150)
-            
-            # tickets = Tickets.objects.get(id = serializer.data['ticket_id'])
-            # send_booked_notification(condition="seat-reserved", title="Seat Reservation", body="Thank You! Your seat has been reserved successfully")
             return Response({
                 'id' : tickets.id,
                 'price' : tickets.Price
@@ -202,6 +199,38 @@ class TicketDetailView(APIView):
             return Response({"Deleted Successfully!!!"}, status=status.HTTP_404_NOT_FOUND)
         except Tickets.DoesNotExist:
             return Response({"Not Found": "Does Not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class TransectionView(APIView):
+
+    def get(self, request):
+        try:
+            transections = Transection.objects.all()
+            serializer = TransectionSerializer(transections, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Transection.DoesNotExist:
+            return Response({"Not Found": "Does Not Exist"}, status= status.HTTP_404_NOT_FOUND)
+
+    def post(self, request, *args):
+        serializer = TransectionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TransectionDetailView(APIView):
+
+    def get(self, request, ticket_id):
+        try:
+            transection = Transection.objects.get(ticket_id=ticket_id)
+            serializer = TransectionSerializer(transection)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Transection.DoesNotExist:
+            return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+
+
+
 
 
 
