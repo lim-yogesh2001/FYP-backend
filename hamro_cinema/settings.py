@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'fcm_django',
     'django_rest_passwordreset',
-    'django_crontab',
+    # 'django_crontab',
     'knox',
     'accounts',
     'movie',

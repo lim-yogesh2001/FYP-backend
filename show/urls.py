@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ShowsDetailView, ShowsView, SeatView, TheaterSeatView, TicketDetailView, TicketView, ReservedSeatView, ReservedSeatDetailView
+from .views import ShowsDetailView, ShowsView, SeatView, TheaterSeatView, TicketDetailView, TicketView, ReservedSeatView, ReservedSeatDetailView, TransectionView, TransectionDetailView
 # BookedTicketView, BookedTicketDetailView, ReservedTicketView, ReservedTicketDetailView
 
 urlpatterns = [
@@ -14,5 +14,6 @@ urlpatterns = [
     path("tickets/<int:user_id>", TicketView.as_view(), name='ticket-lists'),
     path("tickets/details/<int:reserved_seat_id>",
          TicketDetailView.as_view(), name='ticket-details'),
-    
+    path("transections/", TransectionView.as_view(), name='transection-list'),
+    path("transections/<int:ticket_id>", TransectionDetailView.as_view(), name='transection-detail')
 ]

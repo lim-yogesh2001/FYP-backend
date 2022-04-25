@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shows, Seats, Reserved_Seat, Tickets
+from .models import Shows, Seats, Reserved_Seat, Tickets, Transection
 
 class ShowAdmin(admin.ModelAdmin):
     list_filter = ('langauge',)
@@ -19,5 +19,6 @@ admin.site.register(Shows, ShowAdmin)
 admin.site.register(Seats, SeatAdmin)
 admin.site.register(Reserved_Seat, ReservedSeatAdmin)
 admin.site.register(Tickets, TicketAdmin)
+admin.site.register(Transection)
 # admin.site.register(BookedTickets)
 # admin.site.register(ReservedTicket)
