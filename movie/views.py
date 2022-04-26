@@ -16,7 +16,7 @@ class MovieView(APIView):
     def get(self, request):
         # get the list of all the movies
         try:
-            movies = Movies.objects.all()
+            movies = Movies.objects.filter(is_upcoming=False, is_recommended= False)
             serializer = MovieSerializer(movies, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Movies.DoesNotExist:
@@ -57,7 +57,7 @@ class RecommendedMovieView(APIView):
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id,is_premium_user=True)
-            movies = Movies.objects.filter(user_id=user,is_recommended=True)
+            movies = Movies.objects.filter(user_id=user, is_recommended=True)
             serializer = MovieSerializer(movies, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Movies.DoesNotExist:
