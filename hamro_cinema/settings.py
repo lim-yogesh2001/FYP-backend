@@ -174,4 +174,10 @@ FCM_DJANGO_SETTINGS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = '/media/'
 
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_USE_TLS = True
+EMAIT_PORT = 587
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'

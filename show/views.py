@@ -1,4 +1,5 @@
 from os import stat
+from urllib import response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
@@ -229,7 +230,31 @@ class TransectionDetailView(APIView):
         except Transection.DoesNotExist:
             return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
 
+class MoviesWatched(APIView):
 
+    # def get(self, request, user_id):
+    #     try:
+    #         user = User.objects.get(id=user_id)
+    #         r_seats = Reserved_Seat.objects.filter(user_id=user)
+    #         r_searializer = ReservedSeatSerializer(r_seats, many=True)
+    #         # shows = Shows.objects.filter(id=r_seats).values_list('movie_id')
+    #         # movies = Movies.objects.filter(id=shows)
+    #         return Response({
+    #             'id': r_searializer['id']
+    #         }, status= status.HTTP_200_OK)
+    #     except Reserved_Seat.DoesNotExist:
+    #         return Response("There are no data")
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            r_seats = Reserved_Seat.objects.filter(user_id=user).values_list("show_id")
+            shows = Shows.objects.filter(id=r_seats)
+            # shows = Shows.objects.filter()
+            serializer = ShowSerializer(shows, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Reserved_Seat.DoesNotExist:
+            pass
 
 
 

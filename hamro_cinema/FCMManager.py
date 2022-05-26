@@ -6,15 +6,8 @@ from . import settings
 cred = credentials.Certificate(settings.cred)
 firebase_admin.initialize_app(cred)
 
-topics = [
-    'booked-info',
-    'seat-reserved'
-]
 
-condition = "'booked-info' in topics || 'seat-reserved' in topics"
-
-
-def send_booked_notification(condition, title, body):
+def send_booked_notification(topic, title, body):
     device = FCMDevice.objects.all()
     message = messaging.Message(
         data={
