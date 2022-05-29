@@ -24,6 +24,7 @@ class Seats(models.Model):
     row = models.IntegerField(default=0)
     number = models.IntegerField(default=0)
     theater_id = models.ForeignKey(Theaters, on_delete=models.CASCADE)
+    isHouseFull = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Seats"

@@ -5,8 +5,20 @@ from rest_framework import status
 from movie.models import Movies
 from .serializers import MovieSerializer
 from accounts.models import User
+from fcm_django.models import FCMDevice
+from firebase_admin import messaging
+from show.models import Transection
 
 # Create your views here.
+
+def send_notification():
+    topic = 'cinema'
+    message = messaging.Message(notification=messaging.Notification(
+        title= "New Upcoming movie",
+        body="Wrestle Mania"
+    ))    
+    response = FCMDevice.send_topic_message(message, topic)
+    return response
 
 
 class MovieView(APIView):
@@ -46,6 +58,7 @@ class UpcomingMovieView(APIView):
         try:
             movie = Movies.objects.filter(is_upcoming=True)
             serializer = MovieSerializer(movie, many=True)
+            send_notification()
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response({"Model Does not exist"}, status=status.HTTP_404_NOT_FOUND)
@@ -63,3 +76,9 @@ class RecommendedMovieView(APIView):
         except Movies.DoesNotExist:
             return Response("Movies Does not exist", status=status.HTTP_404_NOT_FOUND)
 
+# class WatchedMovies(APIView):
+
+#     def get(self, request, user_id):
+#         try:
+#             user = User.objects.get(id=user_id)
+#             transaction = Transection.objects.filter(ticket)

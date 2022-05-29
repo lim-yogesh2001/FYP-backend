@@ -220,15 +220,13 @@ class TransectionView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TransectionDetailView(APIView):
+# class TransectionDetailView(APIView):
 
-    def get(self, request, ticket_id):
-        try:
-            transection = Transection.objects.get(ticket_id=ticket_id)
-            serializer = TransectionSerializer(transection)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Transection.DoesNotExist:
-            return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+#     def get(self, request, user_id):
+#         try:
+#             user = User.objects.get(id = user_id)
+#             reserved_seat = Reserved_Seat.objects.filter()
+
 
 class MoviesWatched(APIView):
 
