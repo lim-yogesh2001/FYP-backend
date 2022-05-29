@@ -3,8 +3,7 @@ from firebase_admin import credentials, messaging
 from fcm_django.models import FCMDevice
 from . import settings
 
-cred = credentials.Certificate(settings.cred)
-firebase_admin.initialize_app(cred)
+
 
 
 def send_booked_notification(topic, title, body):
