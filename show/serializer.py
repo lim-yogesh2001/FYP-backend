@@ -6,7 +6,7 @@ class ShowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shows
         fields = ['id', 'show_time', 'date',
-                  'langauge', 'theater_id', 'movie_id']
+                  'langauge', 'theater_id', 'movie_id', 'isHouseFull']
         depth = 1
 
 

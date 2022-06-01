@@ -12,6 +12,7 @@ class Shows(models.Model):
     langauge = models.CharField(blank=False, max_length=100)
     theater_id = models.ForeignKey(Theaters, on_delete=models.CASCADE)
     movie_id = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    isHouseFull = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Shows"
@@ -24,7 +25,6 @@ class Seats(models.Model):
     row = models.IntegerField(default=0)
     number = models.IntegerField(default=0)
     theater_id = models.ForeignKey(Theaters, on_delete=models.CASCADE)
-    isHouseFull = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Seats"
