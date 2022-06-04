@@ -18,7 +18,7 @@ class Shows(models.Model):
         verbose_name_plural = "Shows"
 
     def __str__(self):
-        return f"Show {self.id}"
+        return f"{self.id}"
 
 
 class Seats(models.Model):
@@ -63,22 +63,3 @@ class Transection(models.Model):
 
     def __str__(self):
         return f"Transection-id: {self.id}"
-    
-
-
-
-
-
-# class ReservedTicket(models.Model):
-#     ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
-#     reserved_seat_id = models.ForeignKey(Reserved_Seat, on_delete=models.CASCADE)
-#     price = models.IntegerField(default=0)
-
-
-# class BookedTickets(models.Model):
-#     ticket_id = models.ForeignKey(Tickets, on_delete=models.CASCADE)
-#     transection_code = models.CharField(max_length=400)
-
-#     class Meta:
-#         verbose_name_plural = "Booked Tickets"
-    
