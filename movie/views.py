@@ -18,8 +18,7 @@ def send_notification():
         body="Wrestle Mania"
     ))    
     response = FCMDevice.send_topic_message(message, topic)
-    return response
-
+    print(response)
 
 class MovieView(APIView):
 

@@ -7,6 +7,7 @@ from rest_framework import status, permissions
 from movie.models import Movies
 from show.models import Reserved_Seat, Seats, Shows, Tickets, Transection
 # , BookedTickets, ReservedTicket
+from movie.serializers import MovieSerializer
 from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, TransectionSerializer
 #  BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
@@ -229,28 +230,29 @@ class TransectionView(APIView):
 
 
 class MoviesWatched(APIView):
-
-    # def get(self, request, user_id):
-    #     try:
-    #         user = User.objects.get(id=user_id)
-    #         r_seats = Reserved_Seat.objects.filter(user_id=user)
-    #         r_searializer = ReservedSeatSerializer(r_seats, many=True)
-    #         # shows = Shows.objects.filter(id=r_seats).values_list('movie_id')
-    #         # movies = Movies.objects.filter(id=shows)
-    #         return Response({
-    #             'id': r_searializer['id']
-    #         }, status= status.HTTP_200_OK)
-    #     except Reserved_Seat.DoesNotExist:
-    #         return Response("There are no data")
-
+    
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
-            r_seats = Reserved_Seat.objects.filter(user_id=user).values_list("show_id")
-            shows = Shows.objects.filter(id=r_seats)
+            r_seats = Reserved_Seat.objects.filter(user_id=user)
+            shows_list = []
+            movies_list = []
+            def getShows():
+                for seat in r_seats.iterator():
+                    show = Shows.objects.get(id=int(str(seat.show_id)))
+                    shows_list.append(show)
+            getShows()
+            def getMovies():
+                for i in range(len(shows_list)):
+                    movie = Movies.objects.get(id = int(str(shows_list[i].movie_id)))
+                    movies_list.append(movie)
+            getMovies()
             # shows = Shows.objects.filter()
-            serializer = ShowSerializer(shows, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            show_serializer = ShowSerializer(shows_list, many=True)
+            serializer = MovieSerializer(movies_list, many=True)
+            return Response(
+               serializer.data
+            , status=status.HTTP_200_OK)
         except Reserved_Seat.DoesNotExist:
             pass
 

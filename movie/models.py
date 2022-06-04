@@ -21,5 +21,5 @@ class Movies(models.Model):
         verbose_name_plural = "Movies"
     
     def __str__(self):
-        return f"{self.movie_name} {self.release_date}"
+        return f"{self.id}"
     
