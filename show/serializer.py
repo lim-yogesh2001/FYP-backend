@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Reserved_Seat, Seats, Shows, Tickets, Transection
+from movie.models import Movies
 
 
 class ShowSerializer(serializers.ModelSerializer):
@@ -31,3 +32,8 @@ class TransectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transection
         fields = "__all__"
+
+class HistorOfMoviesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movies
+        fields = ['id', 'movie_name', 'cover_image', 'genres']

@@ -1,3 +1,4 @@
+import numpy as np
 from os import stat
 from urllib import response
 from rest_framework.views import APIView
@@ -8,7 +9,7 @@ from movie.models import Movies
 from show.models import Reserved_Seat, Seats, Shows, Tickets, Transection
 # , BookedTickets, ReservedTicket
 from movie.serializers import MovieSerializer
-from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, TransectionSerializer
+from show.serializer import ReservedSeatSerializer, SeatSerializer, ShowSerializer, TicketSerializer, TransectionSerializer, HistorOfMoviesSerializer
 #  BookedTicketSerializer, ReservedTicketSerializer
 from theater.models import Theaters
 from accounts.models import User
@@ -221,16 +222,8 @@ class TransectionView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class TransectionDetailView(APIView):
-
-#     def get(self, request, user_id):
-#         try:
-#             user = User.objects.get(id = user_id)
-#             reserved_seat = Reserved_Seat.objects.filter()
-
-
 class MoviesWatched(APIView):
-    
+
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
@@ -247,16 +240,28 @@ class MoviesWatched(APIView):
                     movie = Movies.objects.get(id = int(str(shows_list[i].movie_id)))
                     movies_list.append(movie)
             getMovies()
+
+            # to set only the the unique movies watched by the user
+            unique_movies = set(movies_list)
+
             # shows = Shows.objects.filter()
             show_serializer = ShowSerializer(shows_list, many=True)
-            serializer = MovieSerializer(movies_list, many=True)
+            serializer = HistorOfMoviesSerializer(unique_movies, many=True)
             return Response(
                serializer.data
             , status=status.HTTP_200_OK)
         except Reserved_Seat.DoesNotExist:
             pass
 
+class Transections(APIView):
 
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id = user_id)
+            r_seats = Reserved_Seat.objects.filter(user_id = user)
+            
+        except:
+            pass
 
 
 
