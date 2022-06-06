@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-ueney4g4%e)bd(1*jddl5f745oh1fl-=l%ho3bw@gb+n(n1*p+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -179,9 +179,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = '/media/'
 
 # Email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIT_PORT = 587
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = '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'
+
