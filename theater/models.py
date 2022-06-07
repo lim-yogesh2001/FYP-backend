@@ -19,7 +19,7 @@ class Theaters(models.Model):
         verbose_name_plural = "Theaters"
 
     def __str__(self):
-        return self.theater_name
+        return f"{self.id}"
 
 
 class TheaterReviews(models.Model):

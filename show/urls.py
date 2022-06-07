@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ShowsDetailView, ShowsView, SeatView, TheaterSeatView, TicketDetailView, TicketView, ReservedSeatView, ReservedSeatDetailView, TransectionView, MoviesWatched
+from .views import ShowsDetailView, ShowsView, SeatView, TheaterSeatView, TicketDetailView, TicketView, ReservedSeatView, ReservedSeatDetailView, TransectionView, MoviesWatchedView
 # BookedTicketView, BookedTicketDetailView, ReservedTicketView, ReservedTicketDetailView
 
 urlpatterns = [
@@ -16,5 +16,5 @@ urlpatterns = [
          TicketDetailView.as_view(), name='ticket-details'),
     path("transections/", TransectionView.as_view(), name='transection-list'),
 #     path("transections/<int:ticket_id>", TransectionDetailView.as_view(), name='transection-detail'),
-    path("movies-watched/<int:user_id>",MoviesWatched.as_view(), name='movies-watched')
+    path("movies-watched/<int:user_id>",MoviesWatchedView.as_view(), name='movies-watched')
 ]

@@ -63,3 +63,11 @@ class Transection(models.Model):
 
     def __str__(self):
         return f"Transection-id: {self.id}"
+
+class MoviesWatched(models.Model):
+    movie_name = models.CharField(max_length=100, blank=True)
+    cover_image = models.ImageField(upload_to="images/movies_watched")
+    show_id = models.CharField(max_length=10, blank=True)
+    show_time = models.TimeField()
+    date = models.DateField()
+    theater_name = models.CharField(max_length=100, blank=True)

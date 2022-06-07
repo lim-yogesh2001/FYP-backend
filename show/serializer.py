@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Reserved_Seat, Seats, Shows, Tickets, Transection
+from .models import Reserved_Seat, Seats, Shows, Tickets, Transection, MoviesWatched
 from movie.models import Movies
 
 
@@ -37,3 +37,11 @@ class HistorOfMoviesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movies
         fields = ['id', 'movie_name', 'cover_image', 'genres']
+
+class MoviesWatchedSerializer(serializers.Serializer):
+    movie_name = serializers.CharField(max_length=100)
+    cover_image = serializers.ImageField()
+    show_id = serializers.CharField(max_length=10)
+    show_time = serializers.TimeField()
+    date = serializers.DateField()
+    theater_name = serializers.CharField(max_length=100)

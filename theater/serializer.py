@@ -10,5 +10,6 @@ class TheaterSerializer(serializers.ModelSerializer):
 class TheaterReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = TheaterReviews
-        fields = "__all__"
+        fields = ['id', 'ratings', 'comment', 'user_id']
+        depth = 1
 

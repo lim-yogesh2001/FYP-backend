@@ -49,7 +49,6 @@ def theater_reviews_view(request, theater_id):
         return Response("No Data of Theater Reviews were found", status=status.HTTP_404_NOT_FOUND)
 
 
-
 @api_view(['GET', 'PUT', 'DELETE'])
 # @renderer_classes([JSONRenderer])
 def theater_reviews_detailviews(request, id):
