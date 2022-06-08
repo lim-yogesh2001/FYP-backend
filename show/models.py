@@ -65,9 +65,12 @@ class Transection(models.Model):
         return f"Transection-id: {self.id}"
 
 class MoviesWatched(models.Model):
-    movie_name = models.CharField(max_length=100, blank=True)
+    movie_name = models.CharField(max_length=100, primary_key=True, unique=True, default=uuid.uuid4)
     cover_image = models.ImageField(upload_to="images/movies_watched")
     show_id = models.CharField(max_length=10, blank=True)
     show_time = models.TimeField()
     date = models.DateField()
     theater_name = models.CharField(max_length=100, blank=True)
+    row = models.IntegerField(default=0)
+    number = models.IntegerField(default=0)
+    

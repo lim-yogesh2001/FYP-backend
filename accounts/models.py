@@ -21,6 +21,7 @@ class User(AbstractUser):
                              validators=[phone_reggex])
     full_name = models.CharField(max_length=100, blank=True)
     is_premium_user = models.BooleanField(default=False)
+    profile_photo = models.ImageField(blank=True, upload_to = 'images/profile_image')
 
     def __srt__(self):
         return f"User {self.username}"

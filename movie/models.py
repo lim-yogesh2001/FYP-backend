@@ -1,6 +1,33 @@
 from tabnanny import verbose
 from django.db import models
 from accounts.models import User
+from firebase_admin import messaging
+from fcm_django.models import FCMDevice
+
+
+def send_reminder(title, body):
+    topic = "cinema"
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body
+        ),
+        android=messaging.AndroidConfig(
+            priority='normal',
+            notification=messaging.AndroidNotification(
+                icon='stock_ticker_update',
+                color='#f45342'
+            ),
+        ),
+        apns=messaging.APNSConfig(
+            payload=messaging.APNSPayload(
+                aps=messaging.Aps(badge=42),
+            ),
+        ),
+    )
+    response = FCMDevice.send_topic_message(message,topic)
+    print('Successfully sent the notification:', response)
+
 
 # Create your models here.
 class Movies(models.Model):
@@ -22,4 +49,7 @@ class Movies(models.Model):
     
     def __str__(self):
         return f"{self.id}"
-    
+
+    def save(self):
+        send_reminder('New Movie', f'{self.movie_name} was added successfully!!')
+        super(Movies, self).save()

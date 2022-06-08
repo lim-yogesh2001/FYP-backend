@@ -7,7 +7,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken
+from fcm_django.models import FCMDevice
+from firebase_admin import messaging
 
+def send_notification():
+    topic = 'cinema'
+    message = messaging.Message(notification=messaging.Notification(
+        title= "User Information",
+        body="Your username and contact was updated successfully!"
+    ))    
+    response = FCMDevice.send_topic_message(message, topic)
+    print(response)
 
 @api_view(['GET', 'PUT'])
 @permission_classes([permissions.IsAuthenticated])
@@ -21,6 +31,7 @@ def profile_view(request, id):
         serializer = UserSerializer(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            send_notification()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

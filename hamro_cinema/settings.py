@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-ueney4g4%e)bd(1*jddl5f745oh1fl-=l%ho3bw@gb+n(n1*p+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -149,9 +149,8 @@ REST_FRAMEWORK = {
 }
 
 # Firebase
-GOOGLE_APPLICATION_CREDENTIALS = "D:\FYP Backend\hamrocinema-b5960-firebase-adminsdk-v9b0w-04055ab9bd.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:\FYP Backend\hamrocinema-b5960-firebase-adminsdk-v9b0w-04055ab9bd.json"
 FIREBASE_APP = initialize_app()
-
 
 FCM_DJANGO_SETTINGS = {
      # default: _('FCM Django')
@@ -159,7 +158,7 @@ FCM_DJANGO_SETTINGS = {
      # true if you want to have only one active device per registered user at a time
      # default: False
      "FCM_SERVER_KEY": "AAAAyeJejrs:APA91bGdEX5SuW01hX24P5_mehmZ3qZDUIaPy9_PYvGENzjAHeAt55HPI-V5AlfZP69-TZOL0GXzd0PmDK4jCfrmMCcsvpssp88HMEhJenZEXuO8BfvhS-K_AAt_TxXZ-a-bZDZyy61t",
-    # "ONE_DEVICE_PER_USER": True/False,
+    "ONE_DEVICE_PER_USER": False,
      # devices to which notifications cannot be sent,
      # are deleted upon receiving error response from FCM
      # default: False

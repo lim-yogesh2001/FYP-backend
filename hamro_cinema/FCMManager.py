@@ -1,5 +1,5 @@
 import firebase_admin
-from firebase_admin import credentials, messaging
+from firebase_admin import messaging
 from fcm_django.models import FCMDevice
 from . import settings
 
@@ -21,9 +21,8 @@ def send_booked_notification(topic, title, body):
 
 
 
-topic = 'reminder-info'
 def send_reminder(topic, title, body):
-    device = FCMDevice.objects.all()
+    topic = "cinema"
     message = messaging.Message(
         notification=messaging.Notification(
             title=title,
@@ -41,7 +40,6 @@ def send_reminder(topic, title, body):
                 aps=messaging.Aps(badge=42),
             ),
         ),
-        topic=topic
     )
-    response = device.send_message(message, topic=topic)
+    response = FCMDevice.send_topic_message(message,topic)
     print('Successfully sent the notification:', response)
