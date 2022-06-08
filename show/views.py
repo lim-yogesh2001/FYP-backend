@@ -260,7 +260,7 @@ class MoviesWatchedView(APIView):
                     movie_name=movie.movie_name, cover_image=movie.cover_image, show_id=show.pk, show_time=show.show_time, date=show.date, theater_name=theater.theater_name)
                 movie_history.append(history)
             movies = set(movie_history)
-
+            
             serializer = MoviesWatchedSerializer(movies, many=True)
             return Response(
                 serializer.data, status=status.HTTP_200_OK)
