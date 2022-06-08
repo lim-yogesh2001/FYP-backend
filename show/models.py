@@ -30,7 +30,7 @@ class Seats(models.Model):
         verbose_name_plural = "Seats"
 
     def __str__(self):
-        return f"Seat {self.id}"
+        return f"{self.id}"
 
 
 class Tickets(models.Model):
@@ -65,7 +65,7 @@ class Transection(models.Model):
         return f"Transection-id: {self.id}"
 
 class MoviesWatched(models.Model):
-    movie_name = models.CharField(max_length=100, primary_key=True, unique=True, default=uuid.uuid4)
+    movie_name = models.CharField(max_length=100)
     cover_image = models.ImageField(upload_to="images/movies_watched")
     show_id = models.CharField(max_length=10, blank=True)
     show_time = models.TimeField()

@@ -235,6 +235,7 @@ class MoviesWatchedView(APIView):
             movies_list = []
             theater_list = []
             movie_history = []
+            seats_list = []
             def getShows():
                 for seat in r_seats.iterator():
                     show = Shows.objects.get(id=int(str(seat.show_id)))
@@ -255,16 +256,22 @@ class MoviesWatchedView(APIView):
                     theater_list.append(theater)
             getTheaters()
 
-            for movie, theater, show in zip(movies_list, theater_list, shows_list):
+            def getSeats():
+                for seat in r_seats.iterator():
+                    r_seat = Seats.objects.get(id = int(str(seat.seat_id)))
+                    seats_list.append(r_seat)
+            getSeats()
+
+            for movie, theater, show, seat in zip(movies_list, theater_list, shows_list, seats_list):
                 history = MoviesWatched.objects.create(
-                    movie_name=movie.movie_name, cover_image=movie.cover_image, show_id=show.pk, show_time=show.show_time, date=show.date, theater_name=theater.theater_name)
+                    movie_name=movie.movie_name, cover_image=movie.cover_image, show_id=show.pk, show_time=show.show_time, date=show.date, theater_name=theater.theater_name, row=seat.row, number= seat.number)
                 movie_history.append(history)
             movies = set(movie_history)
-            
+
             serializer = MoviesWatchedSerializer(movies, many=True)
             return Response(
                 serializer.data, status=status.HTTP_200_OK)
-        except Reserved_Seat.DoesNotExist:
+        except:
             pass
 
 

@@ -45,3 +45,5 @@ class MoviesWatchedSerializer(serializers.Serializer):
     show_time = serializers.TimeField()
     date = serializers.DateField()
     theater_name = serializers.CharField(max_length=100)
+    row = serializers.IntegerField(default=0)
+    number = serializers.IntegerField(default=0)
