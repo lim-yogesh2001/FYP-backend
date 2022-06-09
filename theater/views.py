@@ -3,7 +3,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import TheaterReviews, Theaters
-from .serializer import TheaterReviewSerializer, TheaterSerializer
+from .serializer import TheaterReviewSerializer, TheaterSerializer, TheaterWriteReviewSerializer
 
 # Create your views here.
 
@@ -40,7 +40,7 @@ def theater_reviews_view(request, theater_id):
             serializer = TheaterReviewSerializer(reviews, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         elif request.method == 'POST':
-            serializer = TheaterReviewSerializer(data=request.data)
+            serializer = TheaterWriteReviewSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)

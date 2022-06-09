@@ -272,7 +272,7 @@ class MoviesWatchedView(APIView):
             return Response(
                 serializer.data, status=status.HTTP_200_OK)
         except:
-            pass
+            return Response({"error": "Something Went Wrong or the Movie You Entered Does Not Exist"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Transections(APIView):
